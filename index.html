@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Bell Sekolah Otomatis – SUPER FINAL FIX</title>
+
+<style>
+/* ===== GLOBAL ===== */
+body{
+    font-family:"Segoe UI", Arial, sans-serif;
+    background-image: url("YY.jpg");
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    padding:20px;
+    color:#2c3e50;
+}
+
+
+h2{text-align:center;margin-bottom:12px}
+
+/* ===== BUTTON ===== */
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 4px 8px rgba(0,0,0,.15);
+    transition:.2s;
+}
+button:hover{transform:translateY(-2px)}
+.on{background:#27ae60;color:white}
+.reset{background:#e74c3c;color:white}
+
+/* ===== AUDIO ===== */
+audio{
+    width:100%;
+    margin:12px 0;
+    border-radius:10px;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+th,td{
+    border:1px solid #e1e1e1;
+    padding:7px;
+    text-align:center;
+    font-size:13px;
+}
+td:first-child{
+    font-weight:600;
+    background:#f8f9fb;
+}
+th{color:white;font-size:13px}
+.time{
+    width:90px;
+    border:none;
+    border-radius:6px;
+    padding:4px;
+    margin-top:4px;
+}
+
+/* ===== HEADER WARNA HARI ===== */
+th:nth-child(2),th:nth-child(8),th:nth-child(14),th:nth-child(20),th:nth-child(26),th:nth-child(32),th:nth-child(38){
+    background:linear-gradient(135deg,#1e3799,#4a69bd); /* Senin */
+}
+th:nth-child(3),th:nth-child(9),th:nth-child(15),th:nth-child(21),th:nth-child(27),th:nth-child(33),th:nth-child(39){
+    background:linear-gradient(135deg,#16a085,#1abc9c); /* Selasa */
+}
+th:nth-child(4),th:nth-child(10),th:nth-child(16),th:nth-child(22),th:nth-child(28),th:nth-child(34),th:nth-child(40){
+    background:linear-gradient(135deg,#8e44ad,#9b59b6); /* Rabu */
+}
+th:nth-child(5),th:nth-child(11),th:nth-child(17),th:nth-child(23),th:nth-child(29),th:nth-child(35),th:nth-child(41){
+    background:linear-gradient(135deg,#e67e22,#f39c12); /* Kamis */
+}
+th:nth-child(6),th:nth-child(12),th:nth-child(18),th:nth-child(24),th:nth-child(30),th:nth-child(36),th:nth-child(42){
+    background:linear-gradient(135deg,#c0392b,#e74c3c); /* Jumat */
+}
+th:nth-child(7),th:nth-child(13),th:nth-child(19),th:nth-child(25),th:nth-child(31),th:nth-child(37),th:nth-child(43){
+    background:linear-gradient(135deg,#2c3e50,#34495e); /* Sabtu */
+}
+
+/* ===== SENIN KHUSUS ===== */
+th:nth-child(2),td:nth-child(2){
+    border-left:6px solid #1e3799;
+    background-clip:padding-box;
+}
+
+/* ===== CHECKBOX & DRAG ===== */
+input[type="checkbox"]{transform:scale(1.2);cursor:pointer}
+.song{cursor:grab}
+.order{display:block;font-size:11px;color:#27ae60;font-weight:700}
+
+/* ===== DURASI ===== */
+.durasi{
+    margin-top:4px;
+    font-size:11px;
+    font-weight:700;
+    color:#ecf0f1;
+    opacity:.95;
+}
+
+
+
+/* ===== AUDIO CUSTOM ===== */
+audio{
+    width:100%;
+    margin:14px 0;
+    border-radius:14px;
+    background:#2c3e50;
+    box-shadow:0 6px 14px rgba(0,0,0,.25);
+}
+
+/* Chrome / Edge */
+audio::-webkit-media-controls-panel{
+    background:#2c3e50;
+}
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button{
+    filter:invert(1);
+}
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display{
+    color:white;
+}
+
+/* ===== LOGO ===== */
+.logo-container{
+    text-align:center;
+    margin-bottom:10px;
+}
+.logo-container img{
+    max-height:80px;
+    max-width:200px;
+    object-fit:contain;
+}
+
+
+
+h2{
+    text-align:center;
+    margin:8px 0 14px;
+    color:#2c3e50;
+    text-shadow:0 1px 2px rgba(0,0,0,.1);
+}
+
+
+/* ===== FREEZE HEADER (HARI & WAKTU) ===== */
+th{
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+/* ===== FREEZE KOLOM JUDUL LAGU ===== */
+td:first-child, th:first-child{
+    position: sticky;
+    left: 0;
+    z-index: 4;
+    background: #f8f9fb;
+}
+
+/* ===== SUDUT KIRI ATAS ===== */
+th:first-child{
+    z-index: 5;
+    background: #ffffff;
+}
+
+/* OPTIONAL: supaya scroll halus */
+table{
+    display: block;
+    overflow: auto;
+    max-height: 75vh;
+}
+</style>
+</head>
+
+<body>
+    <div class="logo-container">
+    <img src="LOGO SDIT 2023.png" alt="Logo Sekolah">
+</div>
+
+<h2>Bell SDIT Tihamah Otomatis</h2>
+
+<div style="text-align:center">
+<button class="on" onclick="unlockAudio()">Aktifkan Bell</button>
+<button class="reset" onclick="resetAll()">Reset</button>
+</div>
+
+<audio id="player" controls></audio>
+<table id="tabel"></table>
+
+<script>
+/* ===== KONFIGURASI ===== */
+const hariList=["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const bellList=[
+ "Lagu Pagi",
+ "Masuk",
+ "Istirahat Masuk 1",
+ "Istirahat Keluar 1",
+ "Istirahat Masuk 2",
+ "Istirahat Keluar 2",
+ "Pulang"
+];
+
+const lagu=[
+ {nama:"Aqidatul Awam",file:"Aqidatul Awam Lirik dan Terjemahan.mp4"},
+ {nama:"Asmaul Husna",file:"Habib Umar asmaul husnaeidt.mp4"},
+ {nama:"Doa Pagi",file:"doa pagi.mp4"},
+ {nama:"Syukron Guruku",file:"Syukron Guruku - Cover Santri PONDOK PESANTREN AS'AD.mp3"},
+ {nama:"Maher Zain",file:"Maher Zain.mp4"},
+ {nama:"Kanjeng Nabi DilahirKan",file:"KANJENG NABI DILAHIRKE.mp4"},
+ {nama:"Sholawat Busyro",file:"sholawat busyro.mp4"},
+ {nama:"Man Ana",file:"Man anaa.mp4"},
+ {nama:"Qasidah Ramadhan.mp4",file:"qasidah ramadhan.mp4"},
+ {nama:"Ikrar Tihamah",file:"Ikrar Tihamah New.mpeg"},
+ {nama:"Athfalana.mp4",file:"Ahmad Bukhatir - Athfalana.mp4"},
+ {nama:"Isyfa'lana.mp4",file:"isyfa'lana.mp4"},
+ {nama:"Sholawat Quraniyah.mp4",file:"sholawat quraniyah.mp4"},
+ {nama:"Palestina",file:"Palestin.mpeg"},
+ {nama:"Laa IlaaHa IllAllah.mp4",file:"Laa ilaaha illallah.mp4"},
+ {nama:"Sayid Akhlaq",file:"sayid akhlaq.mp4"},
+ {nama:"Hayati Kullu Ha Lillah.mp4",file:"hayati kullu ha lillah.mp4"},
+ {nama:"Sholawat Kisah Sang Rasul",file:"Sholawat Kisah Sang Rasul Vocal Anak Kecil Suara Merdu.mp4"},
+ {nama:"Rindu Muhammad.mp4",file:"rindu muhammad.mp4"},
+ {nama:"Qasidah Nasab Rasul SAW",file:"Qasidah Nasab Rasul SAW Oleh Habib Ahmad bin Abubakar Assegaf.mp4"},
+ {nama:"Maula Ya Sholi",file:"maula ya sholi.mp4"},
+ {nama:"Hadi Assegaf Ramadhan",file:"hadi assegaf ramadhan"},
+ {nama:"Kelas Tihamah",file:"Kelas Tihamah.mp3"},
+ {nama:"Bersama SDIT Tihamah KAmi Belajar",file:"Bersama SDIT Tihamah KAmi Belajar.mp3"},
+ {nama:"Sholawat Huwannur",file:"Sholawat Huwannur.mp4"},
+ {nama:"Sepohon Kayu",file:"sepohon kayu.mp4"},
+ {nama:"Muhammad Nabina.mp4",file:"muhammad nabina.mp4"},
+ {nama:"Mustafa Atep Ramadhan.mp4",file:"mustafa atep ramadhan.mp4"},
+ {nama:"Mustafa Atep Ramadhan.mp4",file:"mustafa atep ramadhan.mp4"},
+ {nama:"BEL MASUK PAGI",file:"BEL MASUK PAGI.mpeg"},
+ {nama:"BEL ISTIRAHAT SEKOLAH DEAL",file:"2. BEL ISTIRAHAT SEKOLAH DEAL.mp3"},
+ {nama:"BEL MASUK ISTIRAHAT SDIT TIHAMAH",file:"3. BEL MASUK ISTIRAHAT SDIT TIHAMAH.DEAL.mp3"},
+ {nama:"BEL PULANG  SDIT TIHAMAH  REAL",file:"BEL PULANG  SDIT TIHAMAH  REAL.mp3"}
+
+
+
+
+
+];
+
+let data=JSON.parse(localStorage.getItem("bellSuper"))||{};
+let audioUnlocked=false;
+
+/* ===== DURASI LAGU ===== */
+let durasiLagu={};
+lagu.forEach((l,i)=>{
+ const a=new Audio();
+ a.src=l.file;
+ a.addEventListener("loadedmetadata",()=>{
+  durasiLagu[i]=Math.floor(a.duration);
+  renderTable();
+ });
+});
+
+/* ===== AUDIO ===== */
+const player=document.getElementById("player");
+let playlist=[],index=0;
+let volumeNormal=0.5;
+
+function unlockAudio(){
+ if(audioUnlocked) return;
+ volumeNormal=player.volume;
+ player.src=lagu[0].file;
+ player.volume=0.1;
+ player.play().then(()=>{
+  player.pause();
+  audioUnlocked=true;
+  alert("Bell aktif");
+ });
+}
+
+function playPlaylist(list){
+ if(!list||list.length===0) return;
+ playlist=list.slice();
+ index=0;
+ player.volume=1;
+ playNext();
+}
+function playNext(){
+ if(index>=playlist.length){
+  player.volume=volumeNormal;
+  return;
+ }
+ player.src=lagu[playlist[index]].file;
+ player.currentTime=0;
+ player.play();
+}
+player.onended=()=>{index++;playNext();};
+
+/* ===== UTIL ===== */
+function hitungDurasi(p){
+ if(!p) return 0;
+ return p.reduce((t,i)=>t+(durasiLagu[i]||0),0);
+}
+function formatDurasi(d){
+ const m=Math.floor(d/60);
+ const s=d%60;
+ return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+/* ===== TABEL ===== */
+const tabel=document.getElementById("tabel");
+function renderTable(){
+ let html="<tr><th>Lagu</th>";
+ hariList.forEach(h=>{
+  bellList.forEach(b=>{
+   const key=h+"-"+b;
+   const d=hitungDurasi(data[key]?.playlist);
+   html+=`<th>${h}<br>${b}<br>
+   <input class="time" type="time" value="${data[key]?.jam||""}"
+   onchange="setJam('${key}',this.value)">
+   ${d>0?`<div class="durasi">⏱ ${formatDurasi(d)}</div>`:""}
+   </th>`;
+  });
+ });
+ html+="</tr>";
+
+ lagu.forEach((l,i)=>{
+  html+=`<tr><td class="song" draggable="true"
+  ondragstart="drag(event,${i})">${l.nama}</td>`;
+  hariList.forEach(h=>{
+   bellList.forEach(b=>{
+    const key=h+"-"+b;
+    const urut=data[key]?.playlist?.indexOf(i);
+    html+=`
+    <td ondrop="drop(event,'${key}')" ondragover="allow(event)">
+    <input type="checkbox" ${urut>-1?"checked":""}
+    onchange="toggle('${key}',${i})">
+    ${urut>-1?`<span class="order">${urut+1}</span>`:""}
+    </td>`;
+   });
+  });
+  html+="</tr>";
+ });
+ tabel.innerHTML=html;
+}
+renderTable();
+
+/* ===== LOGIC ===== */
+function setJam(k,j){
+ if(!data[k]) data[k]={playlist:[]};
+ data[k].jam=j;save();
+}
+function toggle(k,i){
+ if(!data[k]) data[k]={jam:"",playlist:[]};
+ const p=data[k].playlist;
+ const idx=p.indexOf(i);
+ idx>-1?p.splice(idx,1):p.push(i);
+ save();renderTable();
+}
+function save(){localStorage.setItem("bellSuper",JSON.stringify(data));}
+
+/* ===== DRAG ===== */
+let dragIndex=null;
+function drag(e,i){dragIndex=i;}
+function allow(e){e.preventDefault();}
+function drop(e,k){
+ e.preventDefault();
+ if(!data[k]) return;
+ const p=data[k].playlist;
+ if(!p.includes(dragIndex)) return;
+ p.splice(p.indexOf(dragIndex),1);
+ p.push(dragIndex);
+ save();renderTable();
+}
+
+/* ===== SCHEDULER ===== */
+let sudahMain={};
+setInterval(()=>{
+ if(!audioUnlocked) return;
+ const now=new Date();
+ const h=hariList[now.getDay()-1];
+ if(!h) return;
+ const jam=now.toTimeString().slice(0,5);
+ bellList.forEach(b=>{
+  const key=h+"-"+b;
+  if(!data[key]) return;
+  if(jam===data[key].jam && !sudahMain[key]){
+   sudahMain[key]=true;
+   playPlaylist(data[key].playlist);
+  }
+  if(jam!==data[key].jam){
+   sudahMain[key]=false;
+  }
+ });
+},1000);
+
+/* ===== RESET ===== */
+function resetAll(){
+ if(confirm("Reset semua bell?")){
+  localStorage.clear();
+  location.reload();
+ }
+}
+</script>
+
+</body>
+</html>
